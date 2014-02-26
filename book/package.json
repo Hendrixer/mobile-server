@@ -1,0 +1,17 @@
+{
+  "name": "blank-book",
+  "version": "0.0.0",
+  "description": "book-placeholder",
+  "main": "Gruntfile.js",
+  "devDependencies": {
+    "lodash": "~2.4.1",
+    "moment": "~2.4.0",
+    "time-grunt": "~0.2.5",
+    "load-grunt-tasks": "~0.2.1",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt": "~0.4.2",
+    "grunt-panda": "~0.2.6",
+    "grunt-shell": "~0.6.1"
+  },
+  "dependencies": {}
+}
