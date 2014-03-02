@@ -21,7 +21,6 @@ var UserSchema = new Schema({
   settings: {
     profile: {
       pic: String
-
     }
   },
 

@@ -1,7 +1,7 @@
 
 module.exports = function(app, passport, express){
 
-  app.configure(function(){
+  app.configure('development', function(){
     app.set('port', process.env.PORT || 3000);
     app.set('url', process.env.URL || 'http://localhost');
     app.use(express.logger('dev'));
@@ -15,6 +15,5 @@ module.exports = function(app, passport, express){
     app.use(app.router);
     // app.use(express.static(__dirname + '/../../public'));
 
-  })
-
+  });
 }
