@@ -1,17 +1,18 @@
-var request   = require('supertest'),
-    app       = require('../app.js'),
-    expect    = require('expect.js');
-
+var req    = require('supertest'),
+    expect = require('expect.js'),
+    app    = require('../app.js');
 
 describe('auth', function(){
-  describe('POST /signup', function(){
-    it('Should should respond', function(done){
-      request('http://678889:ballin35@localhost:3000')
-      .post('/signup')
-      .end(function(err, res){
-        expect(err).to.be(null);
-        return done();
-      });
+  it('Should sign up new user', function(done){
+    req(app)
+    .post('/signup')
+    .send({number: '1234', password: '1234'})
+    .end(function(err, res){
+      expect(err).to.be(null);
+      expect(res.body).to.be.an('object');
+      expect(res.body.token).to.be.a('string');
+      expect(res.statusCode).to.be(200);
+      done();
     });
   });
 });
