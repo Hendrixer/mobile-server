@@ -16,4 +16,4 @@ module.exports = function(app, passport, express){
     // app.use(express.static(__dirname + '/../../public'));
 
   });
-}
+};
