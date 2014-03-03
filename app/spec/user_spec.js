@@ -1,14 +1,16 @@
-var req = require('request');
+var request   = require('supertest'),
+    app       = require('../app.js'),
+    expect    = require('expect.js');
 
 
-describe('server', function(){
-  describe('GET /', function(){
+describe('auth', function(){
+  describe('POST /signup', function(){
     it('Should should respond', function(done){
-      req.get('http://localhost:3000', function(err, res, body){
-        body = JSON.parse(body);
-        expect(body).toEqual({test: 'testing'});
-        expect(res.statusCode).toEqual(200);
-        done();
+      request('http://678889:ballin35@localhost:3000')
+      .post('/signup')
+      .end(function(err, res){
+        expect(err).to.be(null);
+        return done();
       });
     });
   });

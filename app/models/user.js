@@ -1,4 +1,5 @@
 var mongoose  = require('mongoose'),
+    bcrypt    = require('bcrypt'),
     Q         = require('q'),
     Schema    = mongoose.Schema,
     ObjectId  = Schema.ObjectId;
@@ -7,9 +8,18 @@ var UserSchema = new Schema({
   username: {
     type: String,
     unique: true,
-    required: true,
     sparse: true,
     index: true
+  },
+
+  password: {
+    type: String,
+    required: true
+  },
+
+  salt: {
+    type: String,
+    required: true
   },
 
   number: {
@@ -30,5 +40,53 @@ var UserSchema = new Schema({
 
 });
 
+
+UserSchema.pre('save', function(next){
+  var user = this;
+  console.log('here');
+  if(!user.isModified('password')) return next();
+
+  bcrypt.genSalt(10, function(err, salt){
+    if(err) return next(err);
+
+    bcrypt.hash(user.password, salt, function(err, hash){
+      if(err) return next(err);
+      user.password = hash;
+      user.salt = salt;
+      return next();
+    });
+  });
+});
+
+UserSchema.statics.findOneOrCreateOne = function(query){
+  var deferred   = Q.defer(),
+      User       = mongoose.model('User');
+
+  console.log('query', query);
+  User.findOne({number: query.number}, function(err, user){
+    if(err){
+      deferred.reject(err);
+    } else if(user){
+      console.log('found user');
+      deferred.resolve(user);
+    } else {
+      console.log('no user');
+      var newUser = new User({
+        number: query.number,
+        password: query.password,
+        salt: 'null'
+      });
+
+      newUser.save(function(err, user){
+        if(err){
+          deferred.reject(err);
+        } else {
+          deferred.resolve(user);
+        }
+      });
+    }
+  });
+  return deferred.promise;
+};
 
 module.exports = mongoose.model('User', UserSchema);
