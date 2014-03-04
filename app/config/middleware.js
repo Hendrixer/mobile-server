@@ -20,7 +20,21 @@ module.exports = {
     next();
   },
 
-  tokenCheck: function(req, res, next){
+  enableCors: function(req, res, next){
+    res.header('Access-Control-Allow-Methods', 'POST,DELETE,OPTIONS,PUT,GET');
+    res.header('Access-Control-Allow-Headers', 'Client-Id, Authorization, X-Requested-With, Token');
+    if(req.method === 'OPTIONS'){
+      res.send(200);
+    } else {
+      next();
+    }
+  },
 
+  clientCheck: function(req, res, next){
+    if(req.headers['client-id'] != 'mobile'){
+      res.send(401);
+    } else {
+      next();
+    }
   }
 };

@@ -18,7 +18,6 @@ module.exports = {
   },
 
   delete: function(req, res){
-    console.log('user', req.user);
     User.findOneAndRemove({_id: req.user._id}, function(err, user){
       if(err){
         throw new Error(err);
@@ -32,7 +31,6 @@ module.exports = {
   },
 
   get: function(req, res){
-    console.log(req.user);
     res.json(req.user);
   }
 };

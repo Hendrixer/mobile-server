@@ -5,6 +5,7 @@ var req    = require('supertest'),
 describe('User Auth', function(){
 
   var token;
+  var client = 'mobile';
 
   it('Should sign up new user', function(done){
     req(app)
@@ -22,8 +23,9 @@ describe('User Auth', function(){
 
   it('Should delete a user', function(done){
     req(app)
-    .get('/api/user/delete')
-    .set('Token', token)
+    .get('/api/v1/user/delete')
+    .set('token', token)
+    .set('client-id', client)
     .end(function(err, res){
       expect(err).to.be(null);
       expect(res.statusCode).to.be(200);

@@ -1,4 +1,4 @@
-var auth   = require('./middleware.js');
+var config = require('./middleware.js');
 
 
 module.exports = function(app, express){
@@ -9,9 +9,11 @@ module.exports = function(app, express){
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    app.use('/api', auth.decode);
-    app.use(auth.logError);
-    app.use(auth.errorHandler);
+    app.use(config.enableCors);
+    app.use('/api', config.clientCheck);
+    app.use('/api', config.decode);
+    app.use(config.logError);
+    app.use(config.errorHandler);
     app.use(app.router);
   });
 };
