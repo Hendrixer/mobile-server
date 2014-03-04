@@ -1,0 +1,42 @@
+{
+  "name": "ng-video-node",
+  "version": "0.0.1",
+  "description": "what's app server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines":{
+    "node": "0.10.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://Hendrixer@bitbucket.org/Hendrixer/ng-video-node.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "q": "^1.0.0",
+    "passport": "^0.2.0",
+    "passport-local": "^0.1.6",
+    "express": "^3.4.8",
+    "mongoose": "^3.8.8",
+    "connect-mongo": "^0.4.0",
+    "node-uuid": "^1.4.1",
+    "bcrypt": "^0.7.7",
+    "grunt": "^0.4.2",
+    "passport-http": "^0.2.2",
+    "express-jwt": "^0.1.2",
+    "jwt-simple": "^0.1.0",
+    "socket.io": "^0.9.16"
+  },
+  "devDependencies": {
+    "request": "^2.34.0",
+    "expect.js": "^0.3.1",
+    "grunt": "^0.4.2",
+    "grunt-contrib-jshint": "^0.8.0",
+    "jshint-stylish": "^0.1.5",
+    "supertest": "^0.9.0",
+    "grunt-mocha-test": "^0.9.4"
+  }
+}
