@@ -3,6 +3,9 @@ var req    = require('supertest'),
     app    = require('../../app.js');
 
 describe('API Server', function(){
+
+  var ID = process.env.CLIENT_MOBILE_ID;
+
   it('Should not grant access without a Client ID', function(done){
     req(app)
     .post('/api/v1/user/new')
@@ -18,7 +21,7 @@ describe('API Server', function(){
     req(app)
     .post('/api/v1/user/new')
     .send({number: '123'})
-    .set('client-id', 'test')
+    .set('client-id', ID + 'nope')
     .end(function(err, res){
       expect(res.statusCode).to.be(401);
       expect(res.body).to.be.empty();
