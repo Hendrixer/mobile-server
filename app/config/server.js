@@ -15,5 +15,6 @@ module.exports = function(app, express){
     app.use(config.logError);
     app.use(config.errorHandler);
     app.use(app.router);
+    app.use(express.static(__dirname + '/../public/'));
   });
 };

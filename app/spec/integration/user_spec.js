@@ -1,6 +1,6 @@
 var req    = require('supertest'),
     expect = require('expect.js'),
-    app    = require('../app.js');
+    app    = require('../../app.js');
 
 describe('User Auth', function(){
 
@@ -11,13 +11,27 @@ describe('User Auth', function(){
     req(app)
     .post('/api/v1/user/new')
     .set('client-id', client)
-    .send({number: '1234', password: '1234'})
+    .send({number: '1234'})
     .end(function(err, res){
       expect(err).to.be(null);
       expect(res.body).to.be.an('object');
       expect(res.body.token).to.be.a('string');
       expect(res.statusCode).to.be(200);
       token = res.body.token;
+      done();
+    });
+  });
+
+  it('Should update a user number', function(done){
+    req(app)
+    .post('/api/v1/user/update')
+    .set('client-id', client)
+    .set('token', token)
+    .send({number: '678-616-9090'})
+    .end(function(err, res){
+      expect(err).to.be(null);
+      expect(res.statusCode).to.be(200);
+      expect(res.body.token).to.be.a('string');
       done();
     });
   });
@@ -30,6 +44,7 @@ describe('User Auth', function(){
     .end(function(err, res){
       expect(err).to.be(null);
       expect(res.statusCode).to.be(200);
+      expect(res.body._id).to.be.a('string');
       done();
     });
   });

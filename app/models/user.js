@@ -12,16 +12,6 @@ var UserSchema = new Schema({
     index: true
   },
 
-  password: {
-    type: String,
-    required: true
-  },
-
-  salt: {
-    type: String,
-    required: true
-  },
-
   number: {
     type: String,
     required: true,
@@ -36,26 +26,12 @@ var UserSchema = new Schema({
 
   groups: [{type: ObjectId, ref: 'Group'}],
 
+  conversations: [{type: ObjectId, ref: 'Converstation'}],
+
   status: String
 
 });
 
-
-UserSchema.pre('save', function(next){
-  var user = this;
-  if(!user.isModified('password')) return next();
-
-  bcrypt.genSalt(10, function(err, salt){
-    if(err) return next(err);
-
-    bcrypt.hash(user.password, salt, function(err, hash){
-      if(err) return next(err);
-      user.password = hash;
-      user.salt = salt;
-      return next();
-    });
-  });
-});
 
 UserSchema.statics.findOneOrCreateOne = function(query){
   var deferred   = Q.defer(),
@@ -68,9 +44,7 @@ UserSchema.statics.findOneOrCreateOne = function(query){
       deferred.resolve(user);
     } else {
       var newUser = new User({
-        number: query.number,
-        password: query.password,
-        salt: 'null'
+        number: query.number
       });
 
       newUser.save(function(err, user){

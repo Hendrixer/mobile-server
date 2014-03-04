@@ -1,5 +1,7 @@
-var app = require('./app.js');
+var app     = require('./app.js'),
+    server  = app.listen(app.get('port')),
+    io      = require('socket.io').listen(server);
 
-app.listen(app.get('port'));
+require('./config/sockets.js')(io);
 
-console.log('Listening on ' + app.get('url') + ':' + app.get('port'));
+console.log('Listening on ' + app.get('url') + ':' + app.get('port') );

@@ -11,7 +11,6 @@ module.exports = {
   },
 
   decode: function(req, res, next){
-    console.log('here')
     if(req.headers.token){
       var token = jwt.decode(req.headers.token, 'baconbits');
       req.user = {
