@@ -18,5 +18,9 @@ module.exports = {
       _id: token._id
     };
     next();
+  },
+
+  tokenCheck: function(req, res, next){
+
   }
 };

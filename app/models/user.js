@@ -62,15 +62,12 @@ UserSchema.statics.findOneOrCreateOne = function(query){
   var deferred   = Q.defer(),
       User       = mongoose.model('User');
 
-  console.log('query', query);
   User.findOne({number: query.number}, function(err, user){
     if(err){
       deferred.reject(err);
     } else if(user){
-      console.log('found user');
       deferred.resolve(user);
     } else {
-      console.log('no user');
       var newUser = new User({
         number: query.number,
         password: query.password,

@@ -2,15 +2,30 @@ var req    = require('supertest'),
     expect = require('expect.js'),
     app    = require('../app.js');
 
-describe('auth', function(){
+describe('User Auth', function(){
+
+  var token;
+
   it('Should sign up new user', function(done){
     req(app)
-    .post('/signup')
+    .post('/user/new')
     .send({number: '1234', password: '1234'})
     .end(function(err, res){
       expect(err).to.be(null);
       expect(res.body).to.be.an('object');
       expect(res.body.token).to.be.a('string');
+      expect(res.statusCode).to.be(200);
+      token = res.body.token;
+      done();
+    });
+  });
+
+  it('Should delete a user', function(done){
+    req(app)
+    .get('/api/user/delete')
+    .set('Token', token)
+    .end(function(err, res){
+      expect(err).to.be(null);
       expect(res.statusCode).to.be(200);
       done();
     });

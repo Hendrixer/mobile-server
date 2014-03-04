@@ -1,4 +1,4 @@
-var auth   = require('./auth.js');
+var auth   = require('./middleware.js');
 
 
 module.exports = function(app, express){
