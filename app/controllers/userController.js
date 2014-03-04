@@ -3,6 +3,7 @@ var User    = require('../models/user.js'),
 
 module.exports = {
   create: function(req, res){
+
     var query = {
       number: req.body.number,
       password: req.body.password

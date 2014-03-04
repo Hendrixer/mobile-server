@@ -9,7 +9,8 @@ describe('User Auth', function(){
 
   it('Should sign up new user', function(done){
     req(app)
-    .post('/user/new')
+    .post('/api/v1/user/new')
+    .set('client-id', client)
     .send({number: '1234', password: '1234'})
     .end(function(err, res){
       expect(err).to.be(null);

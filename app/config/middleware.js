@@ -11,18 +11,21 @@ module.exports = {
   },
 
   decode: function(req, res, next){
-    if(!req.headers.token) return next(new Error('no token'));
-    var token = jwt.decode(req.headers.token, 'baconbits');
-    req.user = {
-      number: token.number,
-      _id: token._id
-    };
+    console.log('here')
+    if(req.headers.token){
+      var token = jwt.decode(req.headers.token, 'baconbits');
+      req.user = {
+        number: token.number,
+        _id: token._id
+      };
+    }
     next();
   },
 
   enableCors: function(req, res, next){
     res.header('Access-Control-Allow-Methods', 'POST,DELETE,OPTIONS,PUT,GET');
     res.header('Access-Control-Allow-Headers', 'Client-Id, Authorization, X-Requested-With, Token');
+
     if(req.method === 'OPTIONS'){
       res.send(200);
     } else {
