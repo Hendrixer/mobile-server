@@ -10,7 +10,7 @@ module.exports = {
 
     User.findOneOrCreateOne(query)
     .then(function(user){
-      var token = jwt.encode(user, 'baconbits');
+      var token = jwt.encode(user, process.env.JWT_SECRET);
       res.json({token: token});
     }).fail(function(err){
       throw new Error(err);
@@ -42,7 +42,7 @@ module.exports = {
       if(err){
         throw new Error(err);
       } else if(user){
-        var token = jwt.encode(user, 'baconbits');
+        var token = jwt.encode(user, process.env.JWT_SECRET);
         res.json({token: token});
       } else {
         res.json({user: 'no user'});

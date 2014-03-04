@@ -5,7 +5,7 @@ var req    = require('supertest'),
 describe('User Auth', function(){
 
   var token;
-  var client = 'mobile';
+  var client = process.env.CLIENT_MOBILE_ID;
 
   it('Should sign up new user', function(done){
     req(app)

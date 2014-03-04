@@ -12,7 +12,7 @@ module.exports = {
 
   decode: function(req, res, next){
     if(req.headers.token){
-      var token = jwt.decode(req.headers.token, 'baconbits');
+      var token = jwt.decode(req.headers.token, process.env.JWT_SECRET);
       req.user = {
         number: token.number,
         _id: token._id
@@ -33,7 +33,7 @@ module.exports = {
   },
 
   clientCheck: function(req, res, next){
-    if(req.headers['client-id'] != 'mobile'){
+    if(req.headers['client-id'] != process.env.CLIENT_MOBILE_ID){
       res.send(401);
     } else {
       next();
