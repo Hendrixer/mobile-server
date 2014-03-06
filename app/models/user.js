@@ -1,5 +1,7 @@
 var mongoose  = require('mongoose'),
     bcrypt    = require('bcrypt'),
+    speakeasy = require('speakeasy'),
+    client    = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN),
     Q         = require('q'),
     Schema    = mongoose.Schema,
     ObjectId  = Schema.ObjectId;
@@ -18,6 +20,13 @@ var UserSchema = new Schema({
     unique: true
   },
 
+  verified: {
+    type: Boolean,
+    default: false
+  },
+
+  code: Number,
+
   settings: {
     profile: {
       pic: String
@@ -32,21 +41,21 @@ var UserSchema = new Schema({
 
 });
 
-
 UserSchema.statics.findOneOrCreateOne = function(query){
-  var deferred   = Q.defer(),
-      User       = mongoose.model('User');
+  var deferred  = Q.defer(),
+      User      = mongoose.model('User');
 
-  User.findOne({number: query.number}, function(err, user){
-    if(err){
+  User.findOne(query, function(finderr, user){
+    if(finderr){
       deferred.reject(err);
     } else if(user){
       deferred.resolve(user);
     } else {
+      var code = speakeasy.totp({key:'abcd123', step: 5, length: 4});
       var newUser = new User({
-        number: query.number
+        number: query.number,
+        code: parseInt(code)
       });
-
       newUser.save(function(err, user){
         if(err){
           deferred.reject(err);
