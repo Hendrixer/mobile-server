@@ -1,5 +1,4 @@
 var mongoose  = require('mongoose'),
-    bcrypt    = require('bcrypt'),
     speakeasy = require('speakeasy'),
     client    = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN),
     Q         = require('q'),
