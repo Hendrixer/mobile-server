@@ -12,9 +12,9 @@ module.exports = function(app, express){
     app.use(config.enableCors);
     app.use('/api', config.clientCheck);
     app.use('/api', config.decode);
+    app.use(app.router);
     app.use(config.logError);
     app.use(config.errorHandler);
-    app.use(app.router);
     app.use(express.static(__dirname + '/../public/'));
   });
 };

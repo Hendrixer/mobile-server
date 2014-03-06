@@ -17,8 +17,14 @@ module.exports = {
         number: token.number,
         _id: token._id
       };
+      next();
+    } else if(!req.headers.token){
+      if(req.url === '/v1/user/new' || req.url === '/v1/user/verify'){
+        next();
+      } else{
+        res.send(401);
+      }
     }
-    next();
   },
 
   enableCors: function(req, res, next){
