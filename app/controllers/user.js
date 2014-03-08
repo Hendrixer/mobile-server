@@ -15,13 +15,8 @@ module.exports = {
 
     User.findOneOrCreateOne(query)
     .then(sendVerificaton)
-    .then(function(response){
-      res.json(response);
-    })
-    .fail(function(err){
-      next(err);
-    })
-    .done();
+    .then(res.json)
+    .fail(next);
   },
 
   delete: function(req, res, next){
@@ -43,18 +38,17 @@ module.exports = {
         user    = {code: code, number: number};
 
     verifyNumber(user)
-    .then(function(user){
+    .then(function(verifiedUser){
       var tokenObj = {
-        number: user.number,
-        _id: user._id,
-        verified: user.verified
+        number: verifiedUser.number,
+        _id: verifiedUser._id,
+        verified: verifiedUser.verified
       };
       var token = jwt.encode(tokenObj, process.env.JWT_SECRET);
       res.json({token: token});
     })
-    .fail(function(err){
-      next(err);
-    });
+    .fail(next);
+
   },
 
   update: function(req, res, next){
@@ -84,6 +78,11 @@ var sendVerificaton = function(newUser){
     body: 'Verificication code: '+ newUser.code
   }, function(smsErr, response){
     if(smsErr){
+      newUser.remove(function(remErr, user){
+        if(remErr){
+          deferred.reject(remErr);
+        }
+      });
       var err = new Error(smsErr);
       err.message = smsErr.message;
       deferred.reject(err);
@@ -119,6 +118,9 @@ var verifyNumber = function(client){
         var codeError = new Error('Invalid Verificication Code');
         deferred.reject(codeError);
       }
+    } else if(!user){
+      var numErr = new Error('Wrong phone number: ' + number);
+      deferred.reject(numErr);
     }
   });
   return deferred.promise;
