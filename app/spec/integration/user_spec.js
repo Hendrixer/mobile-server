@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test';
+
 var req    = require('supertest'),
     expect = require('expect.js'),
     app    = require('../../app.js');
@@ -7,7 +9,7 @@ describe('User Auth', function(){
   var token;
   var client = process.env.CLIENT_MOBILE_ID;
 
-  it('Should sign up new user', function(done){
+  it('Should throw error if invalid phone number', function(done){
     req(app)
     .post('/api/v1/user/new')
     .set('client-id', client)
