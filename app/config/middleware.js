@@ -15,7 +15,8 @@ module.exports = {
       var token = jwt.decode(req.headers.token, process.env.JWT_SECRET);
       req.user = {
         number: token.number,
-        _id: token._id
+        _id: token._id,
+        verified: token.verified
       };
       next();
     } else if(!req.headers.token){
@@ -28,6 +29,7 @@ module.exports = {
   },
 
   enableCors: function(req, res, next){
+    res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'POST,DELETE,OPTIONS,PUT,GET');
     res.header('Access-Control-Allow-Headers', 'Client-Id, Authorization, X-Requested-With, Token');
 
