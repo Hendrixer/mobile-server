@@ -1,6 +1,7 @@
+"use strict";
+
 var mongoose  = require('mongoose'),
     speakeasy = require('speakeasy'),
-    client    = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN),
     Q         = require('q'),
     Schema    = mongoose.Schema,
     ObjectId  = Schema.ObjectId;
@@ -46,7 +47,7 @@ UserSchema.statics.findOneOrCreateOne = function(query){
 
   User.findOne(query, function(finderr, user){
     if(finderr){
-      deferred.reject(err);
+      deferred.reject(finderr);
     } else if(user){
       deferred.resolve(user);
     } else {

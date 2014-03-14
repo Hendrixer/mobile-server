@@ -1,3 +1,5 @@
+"use strict";
+
 var jwt = require('jwt-simple');
 
 module.exports = {
@@ -41,7 +43,7 @@ module.exports = {
   },
 
   clientCheck: function(req, res, next){
-    if(req.headers['client-id'] != process.env.CLIENT_MOBILE_ID){
+    if(req.headers['client-id'] !== process.env.CLIENT_MOBILE_ID){
       res.send(401);
     } else {
       next();

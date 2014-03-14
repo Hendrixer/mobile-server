@@ -1,13 +1,14 @@
+"use strict";
+
 var User      = require('../models/user.js'),
     Q         = require('q'),
-    speakeasy = require('speakeasy'),
     client    = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN),
     jwt       = require('jwt-simple');
 
 module.exports = {
   create: function(req, res, next){
     if(req.user){
-      res.send(user);
+      res.send(req.user);
     }
     var query = {
       number: req.body.number
@@ -15,7 +16,9 @@ module.exports = {
 
     User.findOneOrCreateOne(query)
     .then(sendVerificaton)
-    .then(res.json)
+    .then(function(body){
+      res.json(body);
+    })
     .fail(next);
   },
 
@@ -34,7 +37,7 @@ module.exports = {
 
   verify: function(req, res, next){
     var code    = req.body.code,
-        number  = req.body.number;
+        number  = req.body.number,
         user    = {code: code, number: number};
 
     verifyNumber(user)
@@ -75,13 +78,11 @@ var sendVerificaton = function(newUser){
   client.sendMessage({
     to: newUser.number,
     from: process.env.TWILIO_NUMBER,
-    body: 'Verificication code: '+ newUser.code
+    body: 'Hey Cassie, here is your verification code: '+ newUser.code
   }, function(smsErr, response){
     if(smsErr){
-      newUser.remove(function(remErr, user){
-        if(remErr){
-          deferred.reject(remErr);
-        }
+      newUser.remove(function(remErr){
+        if(remErr) {deferred.reject(remErr);}
       });
       var err = new Error(smsErr);
       err.message = smsErr.message;

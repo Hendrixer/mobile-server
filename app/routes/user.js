@@ -1,3 +1,5 @@
+"use strict";
+
 var user = require('../controllers/user.js');
 
 

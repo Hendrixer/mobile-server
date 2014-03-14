@@ -5,6 +5,12 @@ module.exports = function(grunt){
 
     jshint: {
       options: {
+        curly: true,
+        eqeqeq: true,
+        node: true,
+        globals: {
+          console: true
+        },
         reporter: require('jshint-stylish')
       },
       all: ['app/models/**/*.js', 'app/controllers/**/*.js', 'app/routes/**/*.js', 'app/config/**/*.js']
