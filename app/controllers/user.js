@@ -55,17 +55,16 @@ module.exports = {
   },
 
   update: function(req, res, next){
-    var number = req.body.number,
-        id     = req.user._id;
+    var id      = req.user._id,
+        update  = req.body;
 
-    User.findByIdAndUpdate(id, {number: number}, function(err, user){
+    User.findByIdAndUpdate(id, update, function(err, user){
       if(err){
         next(err);
       } else if(user){
-        var token = jwt.encode(user, process.env.JWT_SECRET);
-        res.json({token: token});
+        res.send(201);
       } else {
-        res.json({user: 'no user'});
+        throw new Error('No user by that ID');
       }
     });
   }
@@ -78,7 +77,7 @@ var sendVerificaton = function(newUser){
   client.sendMessage({
     to: newUser.number,
     from: process.env.TWILIO_NUMBER,
-    body: 'Hey Cassie, here is your verification code: '+ newUser.code
+    body: 'Here is your verification code: '+ newUser.code
   }, function(smsErr, response){
     if(smsErr){
       newUser.remove(function(remErr){

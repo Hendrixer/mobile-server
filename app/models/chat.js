@@ -16,7 +16,7 @@ var ChatSchema = new Schema({
     ref: 'User'
   },
 
-  messages: [{type: ObjectId, ref: 'message'}]
+  messages: [{type: ObjectId, ref: 'Message'}]
 });
 
 module.exports = mongoose.model('Chat', ChatSchema);

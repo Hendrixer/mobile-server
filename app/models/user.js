@@ -3,8 +3,7 @@
 var mongoose  = require('mongoose'),
     speakeasy = require('speakeasy'),
     Q         = require('q'),
-    Schema    = mongoose.Schema,
-    ObjectId  = Schema.ObjectId;
+    Schema    = mongoose.Schema;
 
 var UserSchema = new Schema({
   username: {
@@ -33,13 +32,25 @@ var UserSchema = new Schema({
     }
   },
 
-  groups: [{type: ObjectId, ref: 'Group'}],
-
-  conversations: [{type: ObjectId, ref: 'Converstation'}],
-
   status: String
 
 });
+
+UserSchema.statics.findByPhoneNumber = function(number){
+  var deferred  = Q.deferred(),
+      User      = mongoose.model('User');
+
+  User.findOne({number: number}, function(err, user){
+    if(err){
+      deferred.reject(err);
+    } else if (!user){
+      deferred.reject(new Error('No user by that number'));
+    } else {
+      deferred.resolve(user);
+    }
+  });
+  return deferred.promise;
+};
 
 UserSchema.statics.findOneOrCreateOne = function(query){
   var deferred  = Q.defer(),

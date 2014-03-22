@@ -24,7 +24,8 @@
     "jwt-simple": "^0.1.0",
     "socket.io": "^0.9.16",
     "speakeasy": "^1.0.3",
-    "twilio": "^1.6.0"
+    "twilio": "^1.6.0",
+    "socketio-jwt": "^2.0.1"
   },
   "devDependencies": {
     "request": "^2.34.0",
