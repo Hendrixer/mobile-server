@@ -51,7 +51,6 @@ module.exports = {
       res.json({token: token});
     })
     .fail(next);
-
   },
 
   update: function(req, res, next){

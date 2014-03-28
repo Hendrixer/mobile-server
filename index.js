@@ -12,8 +12,11 @@ io.set('authorization', ioAuth.authorize({
   handshake: true
 }));
 
-io.sockets.on('connection', require('./app/routes/socket.js'));
+io.sockets.on('connection', function(socket){
+  require('./app/routes/socket.js')(socket, io);
+});
 
 // io.sockets.on('disconnect', fun);
+
 
 console.log('Listening on ' + app.get('url') + ':' + app.get('port'));

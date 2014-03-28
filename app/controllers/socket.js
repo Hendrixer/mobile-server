@@ -1,53 +1,29 @@
 "use strict";
 
-var User  = require('../models/user.js'),
-    Chat  = require('../models/chat.js');
-
-
 module.exports = function(socket){
 
   return {
-    // subscribe: function(data){
-    //   var user = socket.handshake.decode_token._id;
-    //   User.findOneByPhoneNumber(data.number)
-    //   .then(function(invited){
-    //     return newChat(user, invited._id);
-    //   })
-    //   .then(function(chat){
-    //     socket.join(chat._id);
-    //   })
-    //   .fail(function(error){
-    //     throw error;
-    //   });
-    // }
-
+    // subscribe to new room
     subscribe: function(data){
-      console.log(socket.handshake.decoded_token.number);
       socket.join(data.room);
       socket.broadcast.to(data.room).emit('joined');
     },
+
+    // leave given room
     unsubscribe: function(data){
       console.log('Leaving room');
       socket.leave(data.room);
       socket.broadcast.to(data.room).emit('left');
     },
 
+    // send message to all users in current room
     sendMessage: function(data){
       socket.broadcast.to(data.room).emit('get message', {message: data.message});
     }
+
+    // sendMedia: function(data){
+    //   var file = data.media;
+
+    // }
   };
-};
-
-
-var newChat = function(userID, invitedID){
-  var newChat = new Chat({
-    started: userID,
-    invited: invitedID
-  });
-
-  newChat.save(function(err, chat){
-    if(err){
-      throw err;
-    }
-  });
 };

@@ -1,7 +1,9 @@
 "use strict";
 
-module.exports = function(socket){
-  var controller = require('../controllers/socket.js')(socket);
+module.exports = function(socket, io){
+  socket._phone = socket.handshake.decoded_token.number;
+
+  var controller = require('../controllers/socket.js')(socket, io);
 
   socket.emit('connected', {message: 'connected'});
 
@@ -10,4 +12,5 @@ module.exports = function(socket){
   socket.on('unsubscribe', controller.unsubscribe);
 
   socket.on('send message', controller.sendMessage);
+
 };
