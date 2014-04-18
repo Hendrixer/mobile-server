@@ -3,3 +3,4 @@ node_modules
 app/public
 .bowerrc
 bower.json
+book
